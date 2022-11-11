@@ -1,0 +1,17 @@
+.PHONY : clean test
+
+CPPFLAGS= -std=c++17 -fPIC -Wall -Wextra -O3 -g
+LDFLAGS= -std=c++17 -dynamiclib
+
+SOURCES = external.cpp history.cpp main.cpp profile.cpp scheduler.cpp external_test.cpp test_util.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+
+TARGET=libscheduler.dylib
+
+all: $(TARGET)
+
+clean:
+	rm -f $(OBJECTS) $(TARGET) test
+
+$(TARGET) : $(OBJECTS)
+	g++ $(CPPFLAGS) $(OBJECTS) -o $@ $(LDFLAGS) -lboost_filesystem -lboost_serialization -ltbb -lcryptopp
